@@ -5,5 +5,5 @@
  */
     require( __DIR__ . '/core/init.php' );
 
-    print 'test';
-?>
+    print 'test111';
+    print 'hello';
