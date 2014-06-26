@@ -2,24 +2,16 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Admin | Lg Cinema</title>
+  <title>URL checker</title>
 <?
-	switch( get_class($this) ){
-	
-		case 'authController':
+switch( get_class($this) ){
+
+		case 'appsController':
+            /*<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css">
+            <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+            */
 ?>
-	<link rel="stylesheet" type="text/css" href="./css/auth.css">
-<?
-		break;
-		
-		case 'postersController':
-?>
-	<link rel="stylesheet" type="text/css" href="./css/posters.css">
-	<link rel="stylesheet" type="text/css" href="./css/timepicker.css">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css">
-	<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
-	<script src="./js/timepicker.js"></script>
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="./js/script.js"></script>
 <?
 		break;

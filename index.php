@@ -2,5 +2,8 @@
 /**
  * Start point
  */
-require( __DIR__ . '/core/init.php' );
 
+$controller = $_GET['controller'];
+$action = $_GET['action'];
+
+require( __DIR__ . '/core/init.php' );
