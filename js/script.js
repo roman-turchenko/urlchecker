@@ -1,8 +1,27 @@
 $(document).ready(function(){
 
-    checkHttpCode("http://www.yandex.ru");
+    var http_codes = $("div.http_code");
+    /**
+     * Check HTTP codes on load, on click
+     */
+    $.each(http_codes, function(k, v){
+        checkHttpCode($(v).data('url'), v);
+    });
+    http_codes.click(function(){
+        checkHttpCode($(this).data('url'), this);
+    });
 });
 
-function checkHttpCode( url ){
-    $.post('?controller=apps&action=getHttpCode', {url:url}, function(data){ alert(data.code); });
+/**
+ * Ajax request for http code
+ * @param url
+ * @param conteiner
+ */
+function checkHttpCode( url, conteiner ){
+
+    $(conteiner).html("&nbsp;").addClass("loading").removeClass("code"+$(conteiner).data('code'));
+    $.post('?controller=apps&action=getHttpCode', {url:url}, function(data){
+        $(conteiner).html(data.code).toggleClass("loading code"+data.code);
+        $(conteiner).data('code', data.code);
+    });
 }

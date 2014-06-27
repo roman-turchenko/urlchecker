@@ -10,8 +10,8 @@ class appsController extends classController{
 //+ Public section
 	
 	public function mainAction(){
-		
-		echo $this->render('main', array(
+
+        echo $this->render('main', array(
             'apps_list' => $this->getAppsList()));
 	}
 
@@ -23,8 +23,11 @@ class appsController extends classController{
 
         if( check_RequestMethod() ){
             set_Json_header();
-            $http_code = appsModel::getRequestHttpCode($_POST['url']);
-            $result = array('code' => $http_code);
+
+            $result = array(
+                'code' => appsModel::getRequestHttpCode($_POST['url']),
+                'total'=> appsModel::getRequestInfo($_POST['url']));
+
             print json_encode($result);
         }else
             _404();
@@ -32,6 +35,13 @@ class appsController extends classController{
         return false;
     }
 
+    public function showAppAction(){
+
+        $url = $_GET['url'];
+        print appsModel::getAppLook($url);
+
+        return false;
+    }
 
 //+ Private section
 
