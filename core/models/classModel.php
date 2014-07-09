@@ -1,8 +1,17 @@
 <?
 class classModel{
 
-	function __construct(){}
+    public static  $action = null;
+    public static  $controller = null;
+    public static  $errors = array();
+    public static  $messages = array();
 
+    function __construct(){
+
+    }
+
+
+//  ++++ Curl
     static function getRequestInfo( $url, $opt = false ){
 
         $ch = curl_init($url);
@@ -110,5 +119,77 @@ class classModel{
 
         return $error_codes[$error_code]?$error_codes[$error_code]:false;
     }
+
+
+//  ++++ MySql
+    /**
+     * @param $sql
+     * @return bool|mysqli_result
+     */
+    public static function query( $sql ){
+        return DB::getInstance()->query( $sql );
+    }
+
+    public static function fetchAssoc( $res ){
+        return DB::getInstance()->fetchAssoc( $res );
+    }
+
+    public static function escapeString( $string ){
+        return DB::getInstance()->escapeString( $string );
+    }
+
+    public static function numRows( $res ){
+        return DB::getInstance()->numRows( $res );
+    }
+
+    public static function insertID(){
+        return DB::getInstance()->insertID();
+    }
+
+
+//  ++++ Menu
+    static function getMainMenuData(){
+        return array(
+
+            array('title' => 'Applications list',
+                  'url'     => classController::st_makeURI(array('controller' => 'apps', 'action' => 'list'))),
+
+            array('title' => 'Platforms list',
+                  'url'   => classController::st_makeURI(array('controller' => 'platform', 'action' => 'list'))),
+
+            array('title' => 'Logout',
+                  'url'   => classController::st_makeURI(array('controller' => 'auth', 'action' => 'logout'))),
+        );
+    }
+
+//  ++++ SESSION
+    public static function setSession($key, $value = ''){
+        if( is_array($key) ) foreach( $key as $k => $v )
+            $_SESSION[$k] = $v;
+        else
+            $_SESSION[$key] = $value;
+
+        return null;
+    }
+
+    public static function unsetSession( $key ){
+
+        if( is_array($key) ) foreach( $key as $v ) unset($_SESSION[$v]);
+        else
+            unset($_SESSION[$key]);
+        return null;
+    }
+
+    public static function getSession( $key ){
+
+        $result = null;
+        if( is_array($key) ) foreach( $key as $v ) $result[] = $_SESSION[$v];
+        else
+            $result = $_SESSION[$key];
+
+        return $result;
+    }
+
+
 }
 ?>

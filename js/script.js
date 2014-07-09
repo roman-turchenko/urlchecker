@@ -1,15 +1,17 @@
 $(document).ready(function(){
 
-    var http_codes = $("div.http_code");
     /**
      * Check HTTP codes on load, on click
      */
+    var http_codes = $("div.http_code");
+    /*
     $.each(http_codes, function(k, v){
         checkHttpCode($(v).data('url'), v);
     });
     http_codes.click(function(){
         checkHttpCode($(this).data('url'), this);
     });
+*/
 });
 
 /**

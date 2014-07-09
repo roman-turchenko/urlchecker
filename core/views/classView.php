@@ -19,5 +19,13 @@ class classView{
 			require( $template_path );
 		return ob_get_clean();
 	}
+
+    public function render_common( $template, $params ){
+        $old_view_folder = $this->view_folder;
+        $this->set_View_folder('common');
+        $result = $this->render( $template, $params );
+        $this->set_View_folder($old_view_folder);
+    return $result;
+    }
 }
 ?>

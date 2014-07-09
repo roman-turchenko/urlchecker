@@ -4,11 +4,14 @@
 
 	if( !$controller ) $controller = 'main';
 	if( !$action ) $action = 'main';
-	
-	$controller .= 'Controller'; 
+
+    classModel::$controller = $controller;
+	classModel::$action     = $action;
+
+    $controller .= 'Controller';
 	$action     .= 'Action';
 
-	if( !file_exists(CONTEROLLERS_DIR.'/'.$controller.'.php') ) _404();
+    if( !file_exists(CONTEROLLERS_DIR.'/'.$controller.'.php') ) _404();
 
 //  init controller and execute action
 	if( !method_exists($obj = new $controller(), $action) ) _404();
