@@ -2,7 +2,7 @@
 define('APP_ROOT_URL', '/');
 
 /**
- * Start point
+ * Start point 111111
  */
 //session_set_cookie_params('', APP_ROOT_URL, $_SERVER['SERVER_NAME'], false, true);
 session_start();
