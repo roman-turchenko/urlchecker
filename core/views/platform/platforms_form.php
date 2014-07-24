@@ -17,7 +17,7 @@
 		<input class="form-field" type="text" name="UA_string" value="<?=$params['user_data']['UA_string']?>" /><br />
 
         <div class="form-title">Description</div>
-        <textarea name="description_application" ><?=$params['user_data']['description_platform']?></textarea><br />
+        <textarea name="description_platform" ><?=$params['user_data']['description_platform']?></textarea><br />
 
 
 <input type="hidden" name="id_platform" value="<?=$params['user_data']['id_platform']?>" />
@@ -26,3 +26,14 @@
     <input class="submit-button" type="submit" value="Apply" />
 </div>
 </form>
+<?
+if( count($params['errors']) > 0 ){
+    ?>
+    <div class="errors"><?=implode('<br />', $params['errors'])?></div>
+<?}?>
+
+<?
+if( count($params['messages']) > 0 ){
+    ?>
+    <div class="messages"><?=implode('<br />', $params['messages'])?></div>
+<?}?>

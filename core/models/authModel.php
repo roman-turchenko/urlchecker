@@ -16,16 +16,11 @@ class authModel extends classModel{
      * Check login\password pare in base
      */
     public static function checkInBase( $login, $password ){
-
-        $sql = "SELECT * FROM users
-                WHERE
-                    login_user    = '".self::escapeString($login)."' AND
-                    password_user = '".md5(self::escapeString(($password)))."'";
-
-        $q = self::query($sql);
-        $r = self::fetchAssoc($q);
-
-    return $r['id_user'] ? $r['id_user'] : null;
+        return userModel::checkInBase( $login, $password );
     }
 
+    public static function is_SuperUserSession(){
+        $curent_user = classModel::getSession('curent_user');
+        return ( $curent_user['superuser'] == 1 );
+    }
 }

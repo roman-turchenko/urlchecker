@@ -17,6 +17,17 @@
 		<div class="form-title">URL application</div>
 		<input class="form-field" type="text" name="url_application" value="<?=$params['user_data']['url_application']?>" /><br />
 
+        <div class="form-title">Applications platforms</div>
+        <ul>
+<?
+foreach( $params['platforms'] as $v ){
+?>
+    <li><label><input name="id_platform[]" type="checkbox" value="<?=$v['id_platform']?>" <?=(in_array($v['id_platform'], $params['app2platform']) ? 'checked' : '')?> /> <?=$v['name_platform']?></label></li>
+<?
+}
+?>
+        </ul>
+
         <div class="form-title">Description</div>
         <textarea name="description_application" ><?=$params['user_data']['description_application']?></textarea><br />
 

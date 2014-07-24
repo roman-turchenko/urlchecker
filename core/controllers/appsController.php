@@ -60,6 +60,10 @@ class appsController extends classController{
                     'id_user' => appsModel::getSession('id_user'),
                 ));
 
+                if( count($_POST['id_platform']) ){
+                    appsModel::insertApp2PlatformData( $id_app, $_POST['id_platform'] );
+                }
+
                 $uri_data = array('action' => 'edit', 'id_application' => $id_app);
             }else{
                 appsModel::setSession('user_data', $_POST);
@@ -95,6 +99,10 @@ class appsController extends classController{
                     'id_user' => appsModel::getSession('id_user'),
                     'id_application' => $_POST['id_application'],
                 ));
+
+                appsModel::deleteApp2PlatformData($_POST['id_application']);
+                if( count($_POST['id_platform']) > 0 )
+                    appsModel::insertApp2PlatformData($_POST['id_application'], $_POST['id_platform']);
             }
 
             appsModel::setSession(array(
@@ -113,6 +121,8 @@ class appsController extends classController{
         if( check_RequestMethod('GET') ){
 
             appsModel::deleteData( (int)$_GET['id_application'] );
+            appsModel::deleteApp2PlatformData( (int)$_GET['id_application'] );
+
             header("Location: ".$this->makeURI(array('action' => 'list')));
             die();
         }else
@@ -156,10 +166,36 @@ class appsController extends classController{
      */
     private function getAppsList(){
 
-        $apps_list = appsModel::getApps();
+        // get curent user data
+        $user_data = classModel::getSession('curent_user');
+        $id_user = authModel::is_SuperUserSession()
+                   ? ($_POST['id_user'] ? $_POST['id_user'] : $user_data['id_user'])
+                   : classModel::getSession('id_user');
+
+        // if the superuser is logged - set id user according to the filter state
+        if( authModel::is_SuperUserSession() ){
+            classModel::setSession('id_user', $id_user);
+        }
+
+        $apps_list = appsModel::getApps( $id_user );
+        $platforms = platformModel::getPlatforms();
+
+        foreach( $apps_list as $k => $v ){
+            $apps_list[$k]['platforms'] = appsModel::getApp2PlatformData( $v['id_application'] );
+        }
+
+
+        $user_filter_data = array();
+        if( authModel::is_SuperUserSession() ){
+            $user_filter_data = userModel::getUsers();
+        }
 
         return $this->render('apps_list', array(
-            'apps_list' => is_array($apps_list) ? $apps_list : array()));
+            'apps_list' => $apps_list,
+            'platforms' => $platforms,
+            'user_filter_data' => $user_filter_data,
+            'curent_user' => $id_user,
+        ));
     }
 
     private function validateForm($data){
@@ -178,11 +214,20 @@ class appsController extends classController{
         list( $errors, $messages, $user_data ) = appsModel::getSession(array('errors','messages','user_data'));
         appsModel::unsetSession(array('errors','messages','user_data'));
 
+        // get platforms
+        $platforms = platformModel::getPlatforms();
+
+        // app to platforms link
+        $app2platform = appsModel::getApp2PlatformData($data['user_data']['id_application']);
+
+
         $this->mainAction(
             $this->render('apps_form', $data + array(
-                'errors'   => $errors,
-                'messages' => $messages,
-                'user_data' => $user_data,
+                'errors'        => $errors,
+                'messages'      => $messages,
+                'user_data'     => $user_data,
+                'platforms'     => $platforms,
+                'app2platform'  => $app2platform,
             ))
         );
     }

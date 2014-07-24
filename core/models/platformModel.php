@@ -43,6 +43,24 @@ class platformModel extends classModel{
     return self::insertID();
     }
 
+    static function updateData( $data ){
+
+        $sql = "UPDATE platforms
+                SET
+                    name_platform = '".$data['name_platform']."',
+                    UA_string     = '".$data['UA_string']."',
+                    description_platform = '".$data['description_platform']."'
+                WHERE
+                    id_platform = '".$data['id_platform']."'";
+        $q = self::query($sql);
+        return null;
+    }
+
+    static function deleteData( $id_platform ){
+        $sql = "DELETE FROM platforms WHERE id_platform = '".$id_platform."'";
+        self::query($sql);
+    }
+
     static function getSubMenuData(){
         return array(
 

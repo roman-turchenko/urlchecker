@@ -9,6 +9,7 @@
 class DB{
     private static $instance;  // экземпляра объекта
     private $link = null;
+    private $sql  = null;
     private function __construct(){
 
         if( $this->link == null )
@@ -27,6 +28,7 @@ class DB{
     }
 
     public function query( $sql ){
+        $this->sql = $sql;
         return mysqli_query($this->link, $sql);
     }
 
@@ -46,7 +48,7 @@ class DB{
         return mysqli_insert_id( $this->link );
     }
 
-    public function getError(){
-        return mysqli_error($this->link);
+    public function queryError(){
+        return mysqli_error($this->link).($this->sql ? " SQL:<br />".$this->sql : "");
     }
 }

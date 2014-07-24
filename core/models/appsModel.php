@@ -6,12 +6,12 @@ class appsModel extends classModel{
     /**
      * Get application list
      */
-    static function getApps(){
+    static function getApps( $id_user ){
 
         $result = array();
-        $sql = "SELECT *
-                FROM applications
-                WHERE id_user = '".(int)self::getSession('id_user')."'";
+        $sql = "SELECT a.*
+                FROM applications a
+                WHERE a.id_user = '".$id_user."'";
         $q = self::query($sql);
 
         while( $r = self::fetchAssoc($q) )
@@ -75,6 +75,32 @@ class appsModel extends classModel{
         self::query($sql);
 
     return null;
+    }
+
+    public static function getApp2PlatformData( $id_application ){
+
+        $result = array();
+        if( !empty($id_application) ){
+            $sql = "SELECT * FROM app2platforms WHERE id_application = '".$id_application."'";
+            $q = self::query($sql);
+            while( $r = self::fetchAssoc($q) ) $result[] = $r['id_platform'];
+        }
+        return $result;
+    }
+
+    public static function insertApp2PlatformData( $id_application, $data ){
+
+        $sql = "INSERT INTO app2platforms (id_application, id_platform) VALUES ('"
+            .$id_application."', '".implode("'),('".$id_application."', '", $data)
+            ."')";
+        self::query($sql);
+
+    return null;
+    }
+
+    public static function deleteApp2PlatformData( $id_application ){
+        $sql = "DELETE FROM app2platforms WHERE id_application = '".$id_application."'";
+        self::query($sql);
     }
 
     static function getSubMenuData(){

@@ -50,6 +50,15 @@ class platformController extends classController{
         return null;
     }
 
+    public function deleteAction(){
+
+        if( check_RequestMethod('GET') ){
+            platformModel::deleteData((int)$_GET['id_platform']);
+            header("Location: ".$this->makeURI(array('action' => 'list')));
+        }else
+            _404();
+    }
+
     public function insertAction(){
 
         if( check_RequestMethod() ){
@@ -71,7 +80,7 @@ class platformController extends classController{
                 $uri_data = array('action' => 'add');
             }
 
-            appsModel::setSession(array(
+            platformModel::setSession(array(
                 'errors'   => platformModel::$errors,
                 'messages' => platformModel::$messages,
             ));
@@ -87,27 +96,27 @@ class platformController extends classController{
     public function updateAction(){
         if( check_RequestMethod() ){
 
-            $_POST['name_application'] = trim($_POST['name_application']);
-            $_POST['url_applicaton']   = trim($_POST['url_applicaton']);
+            $_POST['name_platform'] = trim($_POST['name_platform']);
+            $_POST['UA_string']   = trim($_POST['UA_string']);
 
             if( $this->validateForm($_POST) ){
 
-                appsModel::updateData(array(
+                platformModel::updateData(array(
 
-                    'name_application' => $_POST['name_application'],
-                    'url_application'  => $_POST['url_application'],
-                    'description_application' => nl2br($_POST['description_application']),
-                    'id_user' => appsModel::getSession('id_user'),
-                    'id_application' => $_POST['id_application'],
+                    'name_platform' => $_POST['name_platform'],
+                    'UA_string'  => $_POST['UA_string'],
+                    'description_platform' => strip_tags($_POST['description_platform']),
+                    'id_user' => platformModel::getSession('id_user'),
+                    'id_platform' => $_POST['id_platform'],
                 ));
             }
 
-            appsModel::setSession(array(
-                'errors'   => appsModel::$errors,
-                'messages' => appsModel::$messages,
+            platformModel::setSession(array(
+                'errors'   => platformModel::$errors,
+                'messages' => platformModel::$messages,
             ));
 
-            header("Location: ".$this->makeURI(array('action' => 'edit', 'id_application' => $_POST['id_application'])));
+            header("Location: ".$this->makeURI(array('action' => 'edit', 'id_platform' => $_POST['id_platform'])));
             die();
         }else
             _404();
@@ -127,8 +136,8 @@ class platformController extends classController{
     private function getForm( $data ){
 
         // data from last page reload. Save it and unset
-        list( $errors, $messages, $user_data ) = appsModel::getSession(array('errors','messages','user_data'));
-        appsModel::unsetSession(array('errors','messages','user_data'));
+        list( $errors, $messages, $user_data ) = platformModel::getSession(array('errors','messages','user_data'));
+        platformModel::unsetSession(array('errors','messages','user_data'));
 
         $this->mainAction(
             $this->render('platforms_form', $data + array(

@@ -146,6 +146,10 @@ class classModel{
         return DB::getInstance()->insertID();
     }
 
+    public static function queryError(){
+        return DB::getInstance()->queryError();
+    }
+
 
 //  ++++ Menu
     static function getMainMenuData(){
@@ -156,6 +160,9 @@ class classModel{
 
             array('title' => 'Platforms list',
                   'url'   => classController::st_makeURI(array('controller' => 'platform', 'action' => 'list'))),
+
+            array('title' => 'User profile',
+                  'url'   => classController::st_makeURI(array('controller' => 'user', 'action' => 'list'))),
 
             array('title' => 'Logout',
                   'url'   => classController::st_makeURI(array('controller' => 'auth', 'action' => 'logout'))),
@@ -189,7 +196,6 @@ class classModel{
 
         return $result;
     }
-
 
 }
 ?>

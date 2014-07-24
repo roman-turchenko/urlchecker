@@ -47,7 +47,8 @@ class authController extends classController{
 
             authModel::setSession(array(
                 'id_user' => $id_user,
-                'login'   => true
+                'login'   => true,
+                'curent_user' => userModel::getUserData($id_user),
             ));
 
             header("Location: ".$this->makeURI(array(

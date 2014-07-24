@@ -20,6 +20,10 @@ switch( get_class($this) ){
 
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="./js/script.js"></script>
+
+//  less
+    <script src="./js/less.js"></script>
+    <link rel="stylesheet/less" type="text/css" href="./css/style.less">
 <?
 		break;
 	}
