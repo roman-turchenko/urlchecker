@@ -11,7 +11,7 @@
 <?
 
 foreach( $params['main_menu'] as $v )
-        print '<li><a href="'.$v['url'].'">'.$v["title"].'</a></li>';
+        print '<li class="'.$v['current'].'"><a href="'.$v['url'].'">'.$v["title"].'</a></li>';
 ?>
 </ul>
 
@@ -19,6 +19,6 @@ foreach( $params['main_menu'] as $v )
     <?
 
     foreach( $params['sub_menu'] as $v )
-        print '<li><a href="'.$v['url'].'">'.$v["title"].'</a></li>';
+        print '<li class="'.$v['current'].'"><a href="'.$v['url'].'">'.$v["title"].'</a></li>';
     ?>
 </ul>

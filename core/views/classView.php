@@ -21,11 +21,19 @@ class classView{
 	}
 
     public function render_common( $template, $params ){
+    return $this->render_custom( $template, 'common', $params );
+    }
+
+    public function render_log( $template, $params ){
+    return $this->render_custom( $template, 'log', $params );
+    }
+
+    public function render_custom( $template, $view_folder, $params = array()){
         $old_view_folder = $this->view_folder;
-        $this->set_View_folder('common');
+        $this->set_View_folder($view_folder);
         $result = $this->render( $template, $params );
         $this->set_View_folder($old_view_folder);
-    return $result;
+        return $result;
     }
 }
 ?>

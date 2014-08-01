@@ -8,23 +8,29 @@
 ?>
 <form action="<?=$params['action']?>" class="form-container" method="post">
 
-		<div class="form-title"><h2>Platform</h2></div>
-        <br />
-		<div class="form-title">Name platform</div>
-		<input class="form-field" type="text" name="name_platform" value="<?=$params['user_data']['name_platform']?>" /><br />
-
-		<div class="form-title">User Agent string</div>
-		<input class="form-field" type="text" name="UA_string" value="<?=$params['user_data']['UA_string']?>" /><br />
-
-        <div class="form-title">Description</div>
-        <textarea name="description_platform" ><?=$params['user_data']['description_platform']?></textarea><br />
-
-
-<input type="hidden" name="id_platform" value="<?=$params['user_data']['id_platform']?>" />
-
-<div class="submit-container">
-    <input class="submit-button" type="submit" value="Apply" />
-</div>
+    <h2><?=($params['user_data']['id_platform']?'Edit "'.$params['user_data']['name_platform'].'" platform':'Add new platform')?></h2>
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input class="form-field" type="text" name="name_platform" value="<?=$params['user_data']['name_platform']?>" /></td>
+        </tr>
+        <tr>
+            <td>UA string:</td>
+            <td><textarea name="UA_string"><?=$params['user_data']['UA_string']?></textarea></td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td><textarea name="description_platform" ><?=$params['user_data']['description_platform']?></textarea></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="hidden" name="id_platform" value="<?=$params['user_data']['id_platform']?>" />
+            </td>
+            <td>
+                <input class="submit-button" type="submit" value="Apply" />
+            </td>
+        </tr>
+    </table>
 </form>
 <?
 if( count($params['errors']) > 0 ){

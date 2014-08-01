@@ -1,0 +1,160 @@
+/* Less */
+
+.remove_default_list_style{
+  list-style-type: none;
+  list-style-position: none;
+}
+
+.no_text_decoration{
+  text-decoration: none;
+}
+
+/* backgounds */
+  @main-top-menu-background: #E0E0E0;
+  @active-item-menu-background: #fafafa;
+  @table-th-background: #fafafa;
+  @table-even-tr-background: #E2FFE7;
+  @table-uneven-tr-background: #FCFFE2;
+
+  /* Fonts */
+  @font-for-menu: normal 14px Arial;
+  @font-for-table-th-small: normal 12px Arial;
+  @font-for-table-td-medium: normal 14px Arial;
+
+/* Common */
+*{ margin: 0px; padding: 0px; }
+div.wrapper {
+  padding:0px 2% 10px 2%;
+  width: 96%;
+  min-width: 1000px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Menu */
+ul.top_menu {
+  width: 100%;
+  .remove_default_list_style;
+  background: @main-top-menu-background;
+  li{
+      display: inline-block;
+      padding: 5px 10px;
+
+      a{
+        .no_text_decoration;
+        font: @font-for-menu;
+      }
+  }
+  li.current{
+      background: @active-item-menu-background;
+  }
+}
+
+ul.top_menu.main{ }
+ul.top_menu.sub{
+  background: @active-item-menu-background;
+}
+
+/* Content */
+table.content{
+
+  width: 100%;
+
+  tr th{
+      background: @table-th-background;
+  }
+
+  tr.even{
+    background: @table-even-tr-background;
+  }
+
+  tr.uneven{
+    background: @table-uneven-tr-background;
+  }
+
+  td, th{
+    padding: 8px 4px;
+  }
+
+  th.name_platform{
+    font: @font-for-table-th-small;
+  }
+}
+
+/* Filter */
+div.filter_section{
+  height: 20px;
+  background: #bff535;
+  padding: 10px 10px;
+}
+
+/* Data form */
+form.form-container{
+
+  margin: 0px 10px;
+
+  ul{
+    .remove_default_list_style;
+  }
+
+  h2{
+    margin: 10px 0px;
+  }
+
+  table{
+    float: left;
+    width: 50%;
+    tr{
+      td:first-child{
+        width: 20%;
+      }
+
+      td{
+
+        vertical-align: top;
+        padding: 5px 10px 0px 0px;
+        input[type='text'], input.form-field{
+          width: 90%;
+        }
+        textarea{
+          width: 90%;
+          height: 120px;
+        }
+      }
+    }
+  }
+}
+
+/* App log */
+div.right_coll{
+  float: right;
+  width: 50%;
+  div#app_log{
+    margin-top: -45px;
+  }
+}
+
+div#app_log{
+  div#accordion{
+
+    div{
+      padding: 0px;
+      height: 200px;
+      overflow-y: scroll;
+    }
+
+    table{
+      width: 100%;
+
+      th{
+        font: @font-for-table-th-small;
+      }
+
+      td{
+        font: @font-for-table-td-medium;
+      }
+    }
+  }
+}
+
+div.loading { min-width: 24px; min-height: 24px; }

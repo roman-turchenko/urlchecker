@@ -7,15 +7,15 @@
  */
 ?>
 
-<table border="1">
+<table class="content">
     <tr>
         <th>Login</th>
         <th>Email</th>
         <th colspan="2">Action</th>
     </tr>
 
-<?  foreach( $params['users_list'] as $v ){?>
-    <tr>
+<?  foreach( $params['users_list'] as $k => $v ){?>
+    <tr class="<?=( $k%2 == 0?'even':'uneven' )?>">
         <td><?=$v['login_user']?></td>
         <td><?=$v['email_user']?></td>
         <td><a href="<?=classController::st_makeURI(array('controller' => 'user', 'action' => 'edit', 'id_user' => $v['id_user']))?>">Edit</a></td>

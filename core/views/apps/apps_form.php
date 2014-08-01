@@ -8,17 +8,20 @@
 
 ?>
 <form action="<?=$params['action']?>" class="form-container" method="post">
-
-		<div class="form-title"><h2>Application</h2></div>
-        <br />
-		<div class="form-title">Name application</div>
-		<input class="form-field" type="text" name="name_application" value="<?=$params['user_data']['name_application']?>" /><br />
-
-		<div class="form-title">URL application</div>
-		<input class="form-field" type="text" name="url_application" value="<?=$params['user_data']['url_application']?>" /><br />
-
-        <div class="form-title">Applications platforms</div>
-        <ul>
+    <h2><?=($params['user_data']['id_application']?'Edit "'.$params['user_data']['name_application'].'" application':'Add new application')?></h2>
+    <table>
+        <tr>
+            <td>Name application:</td>
+            <td><input class="form-field" type="text" name="name_application" value="<?=$params['user_data']['name_application']?>" /></td>
+        </tr>
+        <tr>
+            <td>URL application:</td>
+            <td><input class="form-field" type="text" name="url_application" value="<?=$params['user_data']['url_application']?>" /></td>
+        </tr>
+        <tr>
+            <td>Applications platforms:</td>
+            <td>
+                <ul>
 <?
 foreach( $params['platforms'] as $v ){
 ?>
@@ -26,20 +29,34 @@ foreach( $params['platforms'] as $v ){
 <?
 }
 ?>
-        </ul>
-
-        <div class="form-title">Description</div>
-        <textarea name="description_application" ><?=$params['user_data']['description_application']?></textarea><br />
-
-
-        <input type="hidden" name="id_application" value="<?=$params['user_data']['id_application']?>" />
-
-<div class="submit-container">
-    <input class="submit-button" type="submit" value="Apply" />
-</div>
-</form>
-
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td><textarea name="description_application" ><?=$params['user_data']['description_application']?></textarea></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="hidden" name="id_application" value="<?=$params['user_data']['id_application']?>" />
+            </td>
+            <td>
+                <input class="submit-button" type="submit" value="Apply" />
+                <a href="<?=$params['back_url']?>">Back</a>
+            </td>
+        </tr>
+    </table>
 <?
+    if( !empty($params['app_log']) ){
+?>
+        <div class="right_coll"><?=$params['app_log']?></div>
+<?
+    }
+?>
+</form>
+<?
+
+
 if( count($params['errors']) > 0 ){
 ?>
     <div class="errors"><?=implode('<br />', $params['errors'])?></div>

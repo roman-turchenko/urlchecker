@@ -11,15 +11,19 @@ class userController extends classController{
 	public function mainAction( $content = 'Hello!' ){
 
         echo $this->render('main', array(
-            'content'  => $content,
+            'content'  => $content['content_data'],
             'top_menu' => $this->getTopMenu(),
+            'filter_section' => $this->render_common('filter_section', array(
+                'data' => $content['filter_data'])),
         ));
 	}
 
     public function addAction(){
 
-        $this->getForm(array(
-            'action' => $this->makeURI(array('action' => 'insert')),
+        $this->mainAction(array(
+            'content_data' => $this->getForm(array(
+                'action' => $this->makeURI(array('action' => 'insert')),
+            ))
         ));
 
         return null;
@@ -27,9 +31,11 @@ class userController extends classController{
 
     public function editAction(){
 
-        $this->getForm(array(
-            'user_data' => userModel::getUserData( (int)$_GET['id_user'] ),
-            'action'    => $this->makeURI(array('action' => 'update', 'id_user' => (int)$_GET['id_user'])),
+        $this->mainAction(array(
+            'content_data' => $this->getForm(array(
+                'user_data' => userModel::getUserData( (int)$_GET['id_user'] ),
+                'action'    => $this->makeURI(array('action' => 'update', 'id_user' => (int)$_GET['id_user'])),
+            ))
         ));
 
         return null;
@@ -37,9 +43,9 @@ class userController extends classController{
 
     public function listAction(){
 
-        $this->mainAction(
-            $this->getUsersList()
-        );
+        $this->mainAction(array(
+            'content_data' => $this->getUsersList()
+        ));
 
         return null;
     }
@@ -161,13 +167,11 @@ class userController extends classController{
         if( userModel::$action == 'edit' )
             unset( $data['user_data']['password_user'] );
 
-        $this->mainAction(
-            $this->render('users_form', $data + array(
-                'errors'        => $errors,
-                'messages'      => $messages,
-                'user_data'     => $user_data,
-            ))
-        );
+        return $this->render('users_form', $data + array(
+            'errors'        => $errors,
+            'messages'      => $messages,
+            'user_data'     => $user_data,
+        ));
     }
 }
 ?>

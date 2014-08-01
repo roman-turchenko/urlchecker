@@ -79,9 +79,13 @@ class userModel extends classModel{
 
     static function getSubMenuData(){
     return array(
+        array('title'      => 'Add new user',
+              'controller' => 'user',
+              'action'     => 'add'),
 
-        array('title' => 'Add new user',
-              'url'   => classController::st_makeURI(array('controller' => 'user', 'action' => 'add'))),
+        array('title'      => 'Logout',
+            'controller' => 'auth',
+            'action'     => 'logout'),
         );
     }
 }

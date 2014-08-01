@@ -11,15 +11,19 @@ class appsController extends classController{
 	public function mainAction( $content = 'Hello!' ){
 
         echo $this->render('main', array(
-            'content'  => $content,
+            'content'  => $content['content_data'],
             'top_menu' => $this->getTopMenu(),
+            'filter_section' => $this->render_common('filter_section', array(
+                'data' => $content['filter_data'])),
         ));
 	}
 
     public function addAction(){
 
-        $this->getForm(array(
-            'action' => $this->makeURI(array('action' => 'insert')),
+        $this->mainAction(array(
+            'content_data' => $this->getForm(array(
+                'action' => $this->makeURI(array('action' => 'insert')),
+            ))
         ));
 
         return null;
@@ -27,9 +31,12 @@ class appsController extends classController{
 
     public function editAction(){
 
-        $this->getForm(array(
-            'user_data' => appsModel::getApplicationData( (int)$_GET['id_application'] ),
-            'action'    => $this->makeURI(array('action' => 'update', 'id_aplication' => (int)$_GET['id_application'])),
+        $this->mainAction(array(
+            'content_data'  => $this->getForm(array(
+                'user_data' => appsModel::getApplicationData( (int)$_GET['id_application'] ),
+                'action'    => $this->makeURI(array('action' => 'update', 'id_aplication' => (int)$_GET['id_application'])),
+                'app_log'   => $this->getInstance('logController')->getAppLogs( (int)$_GET['id_application'] )
+            ))
         ));
 
         return null;
@@ -37,9 +44,10 @@ class appsController extends classController{
 
     public function listAction(){
 
-        $this->mainAction(
-            $this->getAppsList()
-        );
+        $this->mainAction(array(
+            'content_data'=> $this->getAppsList(),
+            'filter_data' => $this->getFilter(),
+        ));
 
         return null;
     }
@@ -129,35 +137,6 @@ class appsController extends classController{
             _404();
     }
 
-    /**
-     * @return bool
-     * Check url
-     */
-    public function getHttpCodeAction(){
-
-        if( check_RequestMethod() ){
-            set_Json_header();
-
-            $result = array(
-                'code' => appsModel::getRequestHttpCode($_POST['url']),
-                'total'=> appsModel::getRequestInfo($_POST['url']));
-
-            print json_encode($result);
-            die();
-        }else
-            _404();
-
-        return false;
-    }
-
-    public function showAppAction(){
-
-        $url = $_GET['url'];
-        print appsModel::getAppLook($url);
-
-        return false;
-    }
-
 //+ Private section
 
     /**
@@ -166,36 +145,38 @@ class appsController extends classController{
      */
     private function getAppsList(){
 
-        // get curent user data
-        $user_data = classModel::getSession('curent_user');
-        $id_user = authModel::is_SuperUserSession()
-                   ? ($_POST['id_user'] ? $_POST['id_user'] : $user_data['id_user'])
-                   : classModel::getSession('id_user');
-
-        // if the superuser is logged - set id user according to the filter state
-        if( authModel::is_SuperUserSession() ){
-            classModel::setSession('id_user', $id_user);
-        }
+        $id_user = classModel::getCurrentUserId();
 
         $apps_list = appsModel::getApps( $id_user );
         $platforms = platformModel::getPlatforms();
+        $logs = logModel::getLastLogs();
 
         foreach( $apps_list as $k => $v ){
             $apps_list[$k]['platforms'] = appsModel::getApp2PlatformData( $v['id_application'] );
         }
 
-
-        $user_filter_data = array();
-        if( authModel::is_SuperUserSession() ){
-            $user_filter_data = userModel::getUsers();
-        }
-
         return $this->render('apps_list', array(
             'apps_list' => $apps_list,
             'platforms' => $platforms,
-            'user_filter_data' => $user_filter_data,
             'curent_user' => $id_user,
+            'logs' => $logs,
         ));
+    }
+
+    private function getFilter(){
+
+        if( authModel::is_SuperUserSession() ){
+
+            $id_user = classModel::getCurrentUserId();
+
+            // if the superuser is logged - set id user according to the filter state
+            classModel::setSession('id_user', $id_user);
+            return $this->render('filter_section', array(
+                'user_filter' => userModel::getUsers(),
+                'curent_user' => $id_user,
+            ));
+        }else
+            return null;
     }
 
     private function validateForm($data){
@@ -220,16 +201,14 @@ class appsController extends classController{
         // app to platforms link
         $app2platform = appsModel::getApp2PlatformData($data['user_data']['id_application']);
 
-
-        $this->mainAction(
-            $this->render('apps_form', $data + array(
-                'errors'        => $errors,
-                'messages'      => $messages,
-                'user_data'     => $user_data,
-                'platforms'     => $platforms,
-                'app2platform'  => $app2platform,
-            ))
-        );
+        return $this->render('apps_form', $data + array(
+            'errors'        => $errors,
+            'messages'      => $messages,
+            'user_data'     => $user_data,
+            'platforms'     => $platforms,
+            'app2platform'  => $app2platform,
+            'back_url'      => $this->makeURI(array('action' => 'list')),
+        ));
     }
 }
 ?>

@@ -59,13 +59,21 @@ class platformModel extends classModel{
     static function deleteData( $id_platform ){
         $sql = "DELETE FROM platforms WHERE id_platform = '".$id_platform."'";
         self::query($sql);
+        return null;
+    }
+
+    static function deletePlatform2AppData( $id_platform ){
+        $sql = "DELETE FROM app2platforms WHERE id_platform = '".$id_platform."'";
+        self::query($sql);
+        return null;
     }
 
     static function getSubMenuData(){
         return array(
 
-            array('title' => 'Add new platform',
-                  'url'   => classController::st_makeURI(array('controller' => 'platform', 'action' => 'add')))
+            array('title'      => 'Add new platform',
+                  'controller' => 'platform',
+                  'action'     => 'add')
         );
     }
 }

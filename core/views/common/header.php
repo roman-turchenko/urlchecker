@@ -12,21 +12,25 @@ switch( get_class($this) ){
 <?
 	break;
     case 'appsController':
-            /*<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css">
-            <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
-            */
+    default:
 ?>
+    <link rel="stylesheet" href="./css/jquery-ui.min.css">
     <link rel="stylesheet" href="./css/style.css" />
 
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="./js/jquery-1.10.2.min.js"></script>
+    <script src="./js/jquery.ui-1.10.4.min.js"></script>
+
 	<script src="./js/script.js"></script>
 
-//  less
-    <script src="./js/less.js"></script>
-    <link rel="stylesheet/less" type="text/css" href="./css/style.less">
 <?
-		break;
-	}
+//  less
+?>
+    <link rel="stylesheet/less" type="text/css" href="./css/style.less" />
+    <script src="./js/less.js"></script>
+<?
+	break;
+}
 ?>
 </head>
 <body>
+<div class="wrapper">

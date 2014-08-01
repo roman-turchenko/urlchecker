@@ -7,5 +7,6 @@
  */
 include(VIEWS_DIR.'/common/header.php');
 echo $params['top_menu'];
+echo $params['filter_section'];
 echo $params['content'];
 include(VIEWS_DIR.'/common/footer.php');

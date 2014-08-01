@@ -5,28 +5,32 @@
  * Date: 08.07.14
  * Time: 16:19
  */
-
 ?>
 <form action="<?=$params['action']?>" class="form-container" method="post">
-
-    <div class="form-title"><h2>Users</h2></div>
-    <br />
-    <div class="form-title">Login</div>
-    <input class="form-field" type="text" name="login_user" value="<?=$params['user_data']['login_user']?>" /><br />
-
-    <div class="form-title">Email</div>
-    <input class="form-field" type="text" name="email_user" value="<?=$params['user_data']['email_user']?>" /><br />
-
-    <div class="form-title">New password</div>
-    <input class="form-field" type="text" name="password_user" value="<?=$params['user_data']['password_user']?>" /><br />
-
-    <input type="hidden" name="id_user" value="<?=$params['user_data']['id_user']?>" />
-
-    <div class="submit-container">
-        <input class="submit-button" type="submit" value="Apply" />
-    </div>
+    <h2><?=($params['user_data']['id_user']?'Edit "'.$params['user_data']['login_user'].'" user':'Add new user')?></h2>
+    <table>
+        <tr>
+            <td>Login:</td>
+            <td><input class="form-field" type="text" name="login_user" value="<?=$params['user_data']['login_user']?>" /></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input class="form-field" type="text" name="email_user" value="<?=$params['user_data']['email_user']?>" /></td>
+        </tr>
+        <tr>
+            <td>New password:</td>
+            <td><input class="form-field" type="text" name="password_user" value="<?=$params['user_data']['password_user']?>" /></td>
+        </tr>
+        <tr>
+            <td>
+                <input name="id_user" type="hidden" value="<?=$params['user_data']['id_user']?>" />
+            </td>
+            <td>
+                <input class="submit-button" type="submit" value="Apply" />
+            </td>
+        </tr>
+    </table>
 </form>
-
 <?
 if( count($params['errors']) > 0 ){
 ?>

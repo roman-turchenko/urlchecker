@@ -14,27 +14,31 @@ class platformController extends classController{
     public function mainAction( $content = 'Hello!' ){
 
         echo $this->render('main', array(
-            'content'  => $content,
+            'content'  => $content['content_data'],
             'top_menu' => $this->getTopMenu(),
+            'filter_section' => $this->render_common('filter_section', array(
+                'data' => $content['filter_data']
+             ))
         ));
     }
 
     public function listAction(){
 
-        $this->mainAction(
-
-            $this->render('platforms_list', array(
+        $this->mainAction(array(
+            'content_data' => $this->render('platforms_list', array(
                 'platforms_list' => platformModel::getPlatforms()
-            ))
-        );
+            )),
+        ));
 
         return null;
     }
 
     public function addAction(){
 
-        $this->getForm(array(
-            'action' => $this->makeURI(array('action' => 'insert')),
+        $this->mainAction(array(
+            'content_data' => $this->getForm(array(
+                'action' => $this->makeURI(array('action' => 'insert')),
+            ))
         ));
 
         return null;
@@ -42,9 +46,11 @@ class platformController extends classController{
 
     public function editAction(){
 
-        $this->getForm(array(
-            'user_data' => platformModel::getPlatformData( (int)$_GET['id_platform'] ),
-            'action'    => $this->makeURI(array('action' => 'update', 'id_platform' => (int)$_GET['id_platform'])),
+        $this->mainAction(array(
+            'content_data' => $this->getForm(array(
+                'user_data' => platformModel::getPlatformData( (int)$_GET['id_platform'] ),
+                'action'    => $this->makeURI(array('action' => 'update', 'id_platform' => (int)$_GET['id_platform'])),
+            ))
         ));
 
         return null;
@@ -54,6 +60,7 @@ class platformController extends classController{
 
         if( check_RequestMethod('GET') ){
             platformModel::deleteData((int)$_GET['id_platform']);
+            platformModel::deletePlatform2AppData((int)$_GET['id_platform']);
             header("Location: ".$this->makeURI(array('action' => 'list')));
         }else
             _404();
@@ -139,12 +146,11 @@ class platformController extends classController{
         list( $errors, $messages, $user_data ) = platformModel::getSession(array('errors','messages','user_data'));
         platformModel::unsetSession(array('errors','messages','user_data'));
 
-        $this->mainAction(
-            $this->render('platforms_form', $data + array(
-                    'errors'   => $errors,
-                    'messages' => $messages,
-                    'user_data' => $user_data,
-                ))
-        );
+
+        return $this->render('platforms_form', $data + array(
+            'errors'   => $errors,
+            'messages' => $messages,
+            'user_data' => $user_data,
+        ));
     }
 }

@@ -49,6 +49,8 @@ class DB{
     }
 
     public function queryError(){
-        return mysqli_error($this->link).($this->sql ? " SQL:<br />".$this->sql : "");
+        return (($error = mysqli_error($this->link)) != ''
+        ?$error.($this->sql ? " SQL:<br />".$this->sql : "")
+        :'');
     }
 }

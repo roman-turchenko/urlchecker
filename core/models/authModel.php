@@ -23,4 +23,8 @@ class authModel extends classModel{
         $curent_user = classModel::getSession('curent_user');
         return ( $curent_user['superuser'] == 1 );
     }
+
+    public static function is_Authorized(){
+        return ( classModel::getSession('login') === true );
+    }
 }

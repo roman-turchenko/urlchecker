@@ -106,8 +106,9 @@ class appsModel extends classModel{
     static function getSubMenuData(){
     return array(
 
-        array('title' => 'Add new application',
-              'url'   => classController::st_makeURI(array('controller' => 'apps', 'action' => 'add'))),
+        array('title'      => 'Add new application',
+              'controller' => 'apps',
+              'action'     => 'add'),
         );
     }
 }
