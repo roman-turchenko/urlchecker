@@ -41,25 +41,21 @@ class apiController extends classController{
                 CURLINFO_HEADER_OUT    => true,
             ));
 
-            if( is_array($log_data) ){
+            $log_data = array(
+                'id_application' => $id_application,
+                'id_platform'    => $id_platform,
+                'HTTP_code'      => !count(apiModel::$errors) ? $response_data['http_code'] : apiModel::$errors[0],
+                'date_check'     => date('Y-m-d H:i:s', time()),
+                'id_user'        => authModel::getCurrentUserId(),
+                'size_download'  => $response_data['size_download'],
+                'download_content_length' => $response_data['download_content_length'],
+                'redirect_url'   => $response_data['redirect_url'],
+                'request_header' => $response_data['request_header'],
+            );
 
-                $log_data = array(
-                    'id_application' => $id_application,
-                    'id_platform'    => $id_platform,
-                    'HTTP_code'      => $response_data['http_code'],
-                    'date_check'     => date('Y-m-d H:i:s', time()),
-                    'id_user'        => authModel::getCurrentUserId(),
-                    'size_download'  => $response_data['size_download'],
-                    'download_content_length' => $response_data['download_content_length'],
-                    'redirect_url'   => $response_data['redirect_url'],
-                    'request_header' => $response_data['request_header'],
-                );
-
-                logModel::insertData($log_data);
-            }
+            logModel::insertData($log_data);
 
             print json_encode($log_data+array('curl_response' => $response_data));
-
             die();
         }else
             _404();

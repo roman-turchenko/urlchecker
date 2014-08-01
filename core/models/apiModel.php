@@ -13,6 +13,7 @@ class apiModel extends classModel{
 //  ++++ Curl
     static function getRequestInfo( $url, $getinfo_opt = false, $request_opt = array() ){
 
+        $result = array();
         $ch = curl_init($url);
 
         if( count($request_opt) > 0 ) foreach( $request_opt as $k => $v )
@@ -20,17 +21,12 @@ class apiModel extends classModel{
 
         curl_exec($ch);
 
-        if( ($error = self::getCurlError(curl_errno($ch)) == false ){
+        if( ($error = self::getCurlError(curl_errno($ch))) === false ){
 
-            $result = curl_getinfo($ch, $getinfo_opt) + array('error' => false);
+            $result = $getinfo_opt ? curl_getinfo($ch, $getinfo_opt) : curl_getinfo($ch);
         }else{
-            $result = array('error' => true, 'message' )
+            parent::$errors[] = $error;
         }
-
-
-
-        $result = !self::getCurlError(curl_errno($ch))
-
 
         curl_close($ch);
 
