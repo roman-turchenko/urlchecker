@@ -18,6 +18,8 @@ class apiModel extends classModel{
         $ch = null;
         $ch = curl_init($url);
 
+
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         if( count($request_opt) > 0 ) foreach( $request_opt as $k => $v )
             curl_setopt( $ch, $k, $v );
 
