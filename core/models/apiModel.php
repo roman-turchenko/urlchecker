@@ -14,6 +14,8 @@ class apiModel extends classModel{
     static function getRequestInfo( $url, $getinfo_opt = false, $request_opt = array() ){
 
         $result = array();
+
+        $ch = null;
         $ch = curl_init($url);
 
         if( count($request_opt) > 0 ) foreach( $request_opt as $k => $v )
