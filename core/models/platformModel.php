@@ -68,6 +68,12 @@ class platformModel extends classModel{
         return null;
     }
 
+    static function deleteLogData( $id_platform ){
+        $sql = "DELETE FROM check_log WHERE id_platform = '".$id_platform."'";
+        self::query($sql);
+        return null;
+    }
+
     static function getSubMenuData(){
         return array(
 

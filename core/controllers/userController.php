@@ -118,8 +118,13 @@ class userController extends classController{
     public function deleteAction(){
         if( check_RequestMethod('GET') ){
 
-            appsModel::deleteData( (int)$_GET['id_application'] );
-            appsModel::deleteApp2PlatformData( (int)$_GET['id_application'] );
+            $user_apps_data = appsModel::getApps( (int)$_GET['id_user'] );
+            if( is_array($user_apps_data) ) foreach( $user_apps_data as  $v ){
+                appsModel::deleteData($v['id_application']);
+                appsModel::deleteApp2PlatformData($v['id_application']);
+                appsModel::deleteLogData($v['id_application']);
+            }
+            userModel::deleteData( (int)$_GET['id_user'] );
 
             header("Location: ".$this->makeURI(array('action' => 'list')));
             die();
@@ -136,6 +141,21 @@ class userController extends classController{
     private function getUsersList(){
 
         $users_list = userModel::getUsers();
+
+        foreach( $users_list as $k => $v ){
+            $users_list[$k]['btn_edit'] = $this->render_common('btn_edit', array(
+                'url' => $this->makeURI(array('action' => 'edit', 'id_user' => $v['id_user']))
+            ));
+
+
+            if( classModel::getCurrentUserId() !== $v['id_user'] )
+                $users_list[$k]['btn_delete'] = $this->render_common('btn_delete', array(
+                    'url' => $this->makeURI(array('action' => 'delete', 'id_user' => $v['id_user'])),
+                    'confirm_text' => 'Do you want to delete this user?'
+                ));
+            else
+                $users_list[$k]['btn_delete'] = 'Current';
+        }
 
         return $this->render('users_list', array(
             'users_list' => $users_list,

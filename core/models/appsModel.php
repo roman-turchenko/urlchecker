@@ -103,6 +103,12 @@ class appsModel extends classModel{
         self::query($sql);
     }
 
+    public static function deleteLogData( $id_application ){
+        $sql = "DELETE FROM check_log WHERE id_application = '".$id_application."'";
+        self::query($sql);
+        return null;
+    }
+
     static function getSubMenuData(){
     return array(
 

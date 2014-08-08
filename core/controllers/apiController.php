@@ -18,7 +18,7 @@ class apiController extends classController{
 
     public function getHttpCodeAction(){
 
-        //$app_url = $_GET['app_url'];
+
         $id_application = $_POST['id_application'];
         $id_platform    = $_POST['id_platform'];
 
@@ -41,6 +41,8 @@ class apiController extends classController{
                 CURLINFO_HEADER_OUT    => true,
             ));
 
+            $last_log_data = logModel::getLastLogs( $id_application, $id_platform );
+
             $log_data = array(
                 'id_application' => $id_application,
                 'id_platform'    => $id_platform,
@@ -51,11 +53,13 @@ class apiController extends classController{
                 'download_content_length' => $response_data['download_content_length'],
                 'redirect_url'   => $response_data['redirect_url'],
                 'request_header' => $response_data['request_header'],
+                'weight_diff'    => $response_data['size_download'] - $last_log_data[$id_application][$id_platform]['size_download'],
             );
 
-            logModel::insertData($log_data);
+            $id_log = logModel::insertData($log_data);
+            $log_data = logModel::getLog( $id_log );
 
-            print json_encode($log_data+array('curl_response' => $response_data));
+            print json_encode($log_data+array('curl_response' => $response_data)+ array('last_log' => $last_log_data));
             die();
         }else
             _404();

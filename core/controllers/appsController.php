@@ -130,6 +130,7 @@ class appsController extends classController{
 
             appsModel::deleteData( (int)$_GET['id_application'] );
             appsModel::deleteApp2PlatformData( (int)$_GET['id_application'] );
+            appsModel::deleteLogData( (int)$_GET['id_application'] );
 
             header("Location: ".$this->makeURI(array('action' => 'list')));
             die();
@@ -153,6 +154,14 @@ class appsController extends classController{
 
         foreach( $apps_list as $k => $v ){
             $apps_list[$k]['platforms'] = appsModel::getApp2PlatformData( $v['id_application'] );
+            $apps_list[$k]['btn_edit']  = $this->render_common('btn_edit', array(
+                'url' => $this->makeURI(array('action' => 'edit', 'id_application' => $v['id_application'], 'id_user' => $v['id_user']))
+            ));
+
+            $apps_list[$k]['btn_delete'] = $this->render_common('btn_delete', array(
+                'url'    => $this->makeURI(array('action' => 'delete', 'id_application' => $v['id_application'])),
+                'confirm_text' => 'Do you want to delete this application?',
+            ));
         }
 
         return $this->render('apps_list', array(
@@ -160,6 +169,9 @@ class appsController extends classController{
             'platforms' => $platforms,
             'curent_user' => $id_user,
             'logs' => $logs,
+            'btn_add_platform' => $this->render_common('btn_add', array(
+                'url' => $this->makeURI(array('controller' => 'platforms', 'action' => 'add'))
+            )),
         ));
     }
 

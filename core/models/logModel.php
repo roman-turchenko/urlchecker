@@ -9,6 +9,17 @@ class logModel extends classModel{
 
     function __construct(){ }
 
+    public static function getLog( $id_check_log ){
+        $sql = "SELECT *,
+                    CONCAT(weight_diff, ' B') weight_diff_b,
+                    CONCAT(weight_diff/1000, ' kB') weight_diff_kb
+                FROM check_log
+                WHERE id_check_log = '".$id_check_log."'";
+        $q = self::query($sql);
+
+    return self::fetchAssoc($q);
+    }
+
     public static function insertData( $data ){
 
         $sql = "INSERT INTO check_log SET
@@ -20,7 +31,8 @@ class logModel extends classModel{
                 size_download  = '".$data['size_download']."',
                 download_content_length = '".$data['download_content_length']."',
                 redirect_url = '".self::escapeString($data['redirect_url'])."',
-                request_header = '".self::escapeString($data['request_header'])."'
+                request_header = '".self::escapeString($data['request_header'])."',
+                weight_diff    = '".$data['weight_diff']."'
                 ";
 
         self::query($sql);
@@ -28,15 +40,19 @@ class logModel extends classModel{
     return self::insertID();
     }
 
-    public static function getLastLogs(){
+    public static function getLastLogs( $id_applicaton = 0, $id_platform = 0 ){
 
         $result = array();
 
-        $sql = "SELECT ch.*
+        $sql = "SELECT ch.*,
+                    CONCAT(ch.weight_diff, ' B') weight_diff_b,
+                    CONCAT(ch.weight_diff/1000, ' kB') weight_diff_kb
                 FROM check_log ch
-                WHERE date_check IN (
+                WHERE ch.date_check IN (
                     SELECT MAX(date_check) FROM check_log WHERE id_application = ch.id_application AND id_platform = ch.id_platform
-                )";
+                )"
+                .( $id_application ? " AND ch.id_application = '".$id_application."'" : "" )
+                .( $id_platform ? " AND ch.id_platform = '".$id_platform."'" : "" );
 
         $q = self::query($sql);
         while( $r = self::fetchAssoc($q) )
@@ -48,9 +64,11 @@ class logModel extends classModel{
     public static function getAppLog( $id_application, $limit = false ){
 
         $result = array();
-        $sql = "SELECT * FROM check_log
-                WHERE id_application = '".$id_application."'
-                ORDER BY date_check DESC".
+        $sql = "SELECT cl.*, u.email_user
+                FROM check_log cl
+                LEFT JOIN users u ON cl.id_user = u.id_user
+                WHERE cl.id_application = '".$id_application."'
+                ORDER BY cl.date_check DESC".
                 ($limit ? " LIMIT 0, ".$limit : "");
 
         $q = self::query($sql);
@@ -59,5 +77,4 @@ class logModel extends classModel{
 
         return $result;
     }
-
 }

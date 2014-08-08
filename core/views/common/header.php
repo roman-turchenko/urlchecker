@@ -14,19 +14,19 @@ switch( get_class($this) ){
     case 'appsController':
     default:
 ?>
-    <link rel="stylesheet" href="./css/jquery-ui.min.css">
+    <!--<link rel="stylesheet" href="./css/jquery-ui.min.css">-->
     <link rel="stylesheet" href="./css/style.css" />
 
 	<script src="./js/jquery-1.10.2.min.js"></script>
-    <script src="./js/jquery.ui-1.10.4.min.js"></script>
+    <!--<script src="./js/jquery.ui-1.10.4.min.js"></script>-->
 
 	<script src="./js/script.js"></script>
 
 <?
 //  less
 ?>
-    <link rel="stylesheet/less" type="text/css" href="./css/style.less" />
-    <script src="./js/less.js"></script>
+   <!-- <link rel="stylesheet/less" type="text/css" href="./css/style.less" />
+    <script src="./js/less.js"></script>-->
 <?
 	break;
 }

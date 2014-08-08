@@ -1,3 +1,16 @@
+<script>
+    $(document).ready(function(){
+        $("div.more u").click(function(){
+            $(this).next("div.modal").toggle();
+        });
+
+        $("tr.ac_platform").click(function(){
+
+            console.log('Platform: '+$(this).find("td").html());
+            $("tr[platform-key='item-"+$(this).attr('platform-key')+"']").toggle();
+        });
+    });
+</script>
 <?php
 /**
  * Created by PhpStorm.
@@ -6,49 +19,51 @@
  * Time: 15:50
  */
 if( $params['app_log'] ){?>
-<script>
-    $(function() {
-        $( "#accordion" ).accordion();
-    });
-</script>
+
 <div id="app_log">
     <h2>Logs:</h2>
-    <div id="accordion">
+    <table class="content">
+        <tr>
+            <th class="date_check">Date check</th>
+            <th class="HTTP_code">Code</th>
+            <th> &nbsp; </th>
+        </tr>
+
 <?
     foreach( $params['app_log'] as $k => $v ){
         if( is_array($v) ){
 ?>
-        <h3><?=$v[0]['name_platform']?></h3>
-        <div>
-            <table class="content">
-                <tr>
-                    <th>Date check</th>
-                    <th>User</th>
-                    <th>Code</th>
-                    <th>Size download</th>
-                    <th>Content length</th>
-                    <th>Headers</th>
-                </tr>
+        <tr class="ac_platform log_platform" platform-key="<?=$k?>"><td colspan="6"><?=$v[0]['name_platform']?></td></tr>
+       <!--
+        <tr><td colspan="6">
+            <table width="100%">-->
 <?
     foreach( $v as $ke => $va ){
 ?>
-                <tr class="<?=( $ke%2 == 0?'even':'uneven' )?>">
-                    <td><?=$va['date_check']?></td>
-                    <td><?=$va['id_user']?></td>
-                    <td><?=$va['HTTP_code']?></td>
-                    <td><?=$va['size_download']?></td>
-                    <td><?=$va['download_content_length']?></td>
-                    <td><?=$va['request_header']?></td>
-                </tr>
+        <tr class="ac_logs log_item <?=( $ke%2 == 0?'even':'uneven' )?>" platform-key="item-<?=$k?>">
+            <td class="date_check"><?=$va['date_check']?></td>
+            <td class="HTTP_code"><?=$va['HTTP_code']?></td>
+            <td class="more">
+                <div class="more">
+                    <u>Show More</u>
+                    <div class="modal">
+                        <p>User: <?=$va['email_user']?></p>
+                        <p>Size download: <?=$va['size_download']?> bytes</p>
+                        <p>Content-length: <?=$va['download_content_length']?></p>
+                        <p>Request-header:<br /><?=$va['request_header']?></p>
+                    </div>
+                </div>
+            </td>
+        </tr>
 <?
     }
 ?>
-            </table>
-        </div>
+            <!--</table>
+        </td></tr>-->
 <?
         }
     }
 ?>
-    </div>
+    </table>
 </div>
 <?}?>

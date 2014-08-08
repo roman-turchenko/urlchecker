@@ -2,7 +2,7 @@
 
 .remove_default_list_style{
   list-style-type: none;
-  list-style-position: none;
+  list-style-position: inside;
 }
 
 .no_text_decoration{
@@ -19,10 +19,19 @@
   /* Fonts */
   @font-for-menu: normal 14px Arial;
   @font-for-table-th-small: normal 12px Arial;
+  @font-for-table-th-medium: normal 14px Arial;
   @font-for-table-td-medium: normal 14px Arial;
+  @font-for-table-td-small: normal 12px Arial;
+  
+  @font-for-table-td-big: normal 16px Arial;
+  @font-for-table-th-big: normal 16px Arial;
+
+
+  /* Table */
+  @table-td-small-font-height: 20px;
 
 /* Common */
-*{ margin: 0px; padding: 0px; }
+*{ margin: 0px; padding: 0px; font: @font-for-table-td-medium; }
 div.wrapper {
   padding:0px 2% 10px 2%;
   width: 96%;
@@ -36,13 +45,18 @@ ul.top_menu {
   width: 100%;
   .remove_default_list_style;
   background: @main-top-menu-background;
+  @menu-height: 36px;
+  height: @menu-height;
+  
   li{
-      display: inline-block;
-      padding: 5px 10px;
-
+      display: block;
+      float: left;  
+      height: @menu-height;
       a{
         .no_text_decoration;
         font: @font-for-menu;
+        margin: 10px;
+        display: block;
       }
   }
   li.current{
@@ -50,7 +64,9 @@ ul.top_menu {
   }
 }
 
-ul.top_menu.main{ }
+ul.top_menu.main{ 
+    clear: both;    
+}
 ul.top_menu.sub{
   background: @active-item-menu-background;
 }
@@ -74,6 +90,25 @@ table.content{
 
   td, th{
     padding: 8px 4px;
+    div.no_need_to_check{
+        width: 100%;
+        text-align: center;
+    }
+    
+    div.code{
+        text-align: center;
+        width: 100%;
+        font: @font-for-table-td-big;
+        cursor: pointer;
+        min-height: 20px;
+    }
+    
+    div.weight_diff{
+        width: 100%;
+        text-align: center;
+        font: @font-for-table-td-small;
+        color: grey;
+    }
   }
 
   th.name_platform{
@@ -135,26 +170,88 @@ div.right_coll{
 }
 
 div#app_log{
-  div#accordion{
+  table{
+    width: 100%;
 
-    div{
-      padding: 0px;
-      height: 200px;
-      overflow-y: scroll;
+    th{
+      font: @font-for-table-th-medium;
     }
 
-    table{
-      width: 100%;
+    td{
+      height: @table-td-small-font-height;
+      font: @font-for-table-td-small;
+    }
 
-      th{
-        font: @font-for-table-th-small;
-      }
+    tr.log_platform{
+
+      cursor: pointer;
+      background: #d0e9f8;
 
       td{
         font: @font-for-table-td-medium;
+        vertical-align: middle;
+        padding: 5px;
+      }
+    }
+
+    tr.log_item{
+      display: none;
+    }
+
+    th.date_check, td.date_check{
+      width: 35%;
+      text-align: center;
+    }
+
+    td.id_user{
+      width: 25%;
+    }
+
+    th.HTTP_code, td.HTTP_code{
+      width: 15%;
+      text-align: center;
+    }
+
+    td.size_download{
+      width: 25%;
+      text-align: center;
+    }
+    div.more{
+
+      u{
+        cursor: pointer;
       }
     }
   }
 }
 
-div.loading { min-width: 24px; min-height: 24px; }
+div.modal{
+  display: none;
+  padding: 5px;
+  margin: 5px;
+}
+
+div.loading { 
+    background: url("../img/ajax-circle.gif") no-repeat center top; 
+    opacity: 0.5; 
+    min-width: 16px; 
+    min-height: 16px; 
+}
+div.line-loading{
+    background: url("../img/ajax-loader.gif") no-repeat center top;
+    opacity: 0.5; 
+    min-width: 24px; 
+    min-height: 19px; 
+    border-radius: 10px;
+}
+
+.clear { clear: both }
+div.errors {
+    background: #FFC5D1;
+    padding: 10px;
+}
+
+div.messages {
+    background: #D3FFC5;
+    padding: 10px;
+}

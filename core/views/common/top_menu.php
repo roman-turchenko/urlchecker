@@ -22,3 +22,4 @@ foreach( $params['main_menu'] as $v )
         print '<li class="'.$v['current'].'"><a href="'.$v['url'].'">'.$v["title"].'</a></li>';
     ?>
 </ul>
+<div class="clear"></div>

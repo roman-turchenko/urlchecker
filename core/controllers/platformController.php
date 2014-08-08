@@ -24,9 +24,23 @@ class platformController extends classController{
 
     public function listAction(){
 
+        $platforms_list = platformModel::getPlatforms();
+
+        foreach( $platforms_list as $k => $v ){
+
+            $platforms_list[$k]['btn_edit'] = $this->render_common('btn_edit', array(
+                'url' => $this->makeURI(array('action' => 'edit', 'id_platform' => $v['id_platform']))
+            ));
+
+            $platforms_list[$k]['btn_delete'] = $this->render_common('btn_delete', array(
+                'url' => $this->makeURI(array('action' => 'delete', 'id_platform' => $v['id_platform'])),
+                'confirm_text' => 'Do you want to delete this platform?'
+            ));
+        }
+
         $this->mainAction(array(
             'content_data' => $this->render('platforms_list', array(
-                'platforms_list' => platformModel::getPlatforms()
+                'platforms_list' => $platforms_list
             )),
         ));
 
@@ -61,6 +75,8 @@ class platformController extends classController{
         if( check_RequestMethod('GET') ){
             platformModel::deleteData((int)$_GET['id_platform']);
             platformModel::deletePlatform2AppData((int)$_GET['id_platform']);
+            platformModel::deleteLogData((int)$_GET['id_platform']);
+
             header("Location: ".$this->makeURI(array('action' => 'list')));
         }else
             _404();
