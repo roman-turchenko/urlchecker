@@ -61,13 +61,14 @@ class logModel extends classModel{
     return $result;
     }
 
-    public static function getAppLog( $id_application, $limit = false ){
+    public static function getAppLog( $id_application, $id_platform = false, $limit = false ){
 
         $result = array();
         $sql = "SELECT cl.*, u.email_user
                 FROM check_log cl
                 LEFT JOIN users u ON cl.id_user = u.id_user
                 WHERE cl.id_application = '".$id_application."'
+                ".( $id_platform ? " AND cl.id_platform = '".$id_platform."'":"" )."
                 ORDER BY cl.date_check DESC".
                 ($limit ? " LIMIT 0, ".$limit : "");
 

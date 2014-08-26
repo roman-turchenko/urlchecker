@@ -13,8 +13,8 @@
   @main-top-menu-background: #E0E0E0;
   @active-item-menu-background: #fafafa;
   @table-th-background: #fafafa;
-  @table-even-tr-background: #E2FFE7;
-  @table-uneven-tr-background: #FCFFE2;
+  @table-even-tr-background: #C7FAD0;
+  @table-uneven-tr-background: #F6FCC7;
 
   /* Fonts */
   @font-for-menu: normal 14px Arial;
@@ -78,6 +78,7 @@ table.content{
 
   tr th{
       background: @table-th-background;
+      font-weight: bold;
   }
 
   tr.even{
@@ -89,7 +90,7 @@ table.content{
   }
 
   td, th{
-    padding: 8px 4px;
+    padding: 8px 10px;
     div.no_need_to_check{
         width: 100%;
         text-align: center;
@@ -113,6 +114,33 @@ table.content{
 
   th.name_platform{
     font: @font-for-table-th-small;
+    color: #7A0202;
+    font-weight: bold;
+    padding: 5px 10px;
+  }
+  
+  th.actions{
+    width: 100px;
+    
+  }
+  td.actions{
+    text-align: center;   
+  }
+  
+  th.platform_descr, th.app_name, th.platform_name, th.user_login, th.user_email{
+    text-align: left;
+  }
+  
+  th.platform_descr{
+        width: 70%;   
+  }
+
+  td{
+   font: 12px Tahoma;
+  }
+  
+  td.no-data{
+   text-align: center;   
   }
 }
 
@@ -190,7 +218,7 @@ div#app_log{
       td{
         font: @font-for-table-td-medium;
         vertical-align: middle;
-        padding: 5px;
+        padding: 5px 10px;
       }
     }
 
@@ -200,7 +228,7 @@ div#app_log{
 
     th.date_check, td.date_check{
       width: 35%;
-      text-align: center;
+      text-align: left;
     }
 
     td.id_user{
@@ -222,7 +250,15 @@ div#app_log{
         cursor: pointer;
       }
     }
+    th.more{
+        width: 50%;
+        text-align: left;
+    }
   }
+}
+
+table{
+    table-layout: fixed;
 }
 
 div.modal{
@@ -255,3 +291,9 @@ div.messages {
     background: #D3FFC5;
     padding: 10px;
 }
+
+.edit_btn, .delete_btn { font-family: Glyphter; text-decoration: none; font-size: 22px; }
+.edit_btn { color: #2B9459; }
+.edit_btn:hover { color: #47C27D; }
+.delete_btn{ color: #EC4040; }
+.delete_btn:hover{ color: #EE8888; }

@@ -7,4 +7,4 @@
  */
 ?>
 
-<a href="<?=$params['url']?>">Edit</a>
+<a href="<?=$params['url']?>" class="edit_btn" title="Edit this">A</a>

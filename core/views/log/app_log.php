@@ -26,19 +26,20 @@ if( $params['app_log'] ){?>
         <tr>
             <th class="date_check">Date check</th>
             <th class="HTTP_code">Code</th>
-            <th> &nbsp; </th>
+            <th class="more">Details</th>
         </tr>
 
 <?
     foreach( $params['app_log'] as $k => $v ){
         if( is_array($v) ){
 ?>
-        <tr class="ac_platform log_platform" platform-key="<?=$k?>"><td colspan="6"><?=$v[0]['name_platform']?></td></tr>
+        <tr class="ac_platform log_platform" platform-key="<?=$k?>"><td colspan="6"><?=$v['name_platform']?></td></tr>
        <!--
         <tr><td colspan="6">
             <table width="100%">-->
 <?
     foreach( $v as $ke => $va ){
+        if( is_numeric($ke) ){
 ?>
         <tr class="ac_logs log_item <?=( $ke%2 == 0?'even':'uneven' )?>" platform-key="item-<?=$k?>">
             <td class="date_check"><?=$va['date_check']?></td>
@@ -56,6 +57,7 @@ if( $params['app_log'] ){?>
             </td>
         </tr>
 <?
+        }
     }
 ?>
             <!--</table>

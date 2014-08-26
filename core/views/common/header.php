@@ -14,6 +14,7 @@ switch( get_class($this) ){
     case 'appsController':
     default:
 ?>
+    <link rel="stylesheet" href="./fonts/glyphter-font/css/Glyphter.css" />
     <!--<link rel="stylesheet" href="./css/jquery-ui.min.css">-->
     <link rel="stylesheet" href="./css/style.css" />
 

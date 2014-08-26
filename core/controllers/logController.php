@@ -19,17 +19,16 @@ class logController extends classController{
     public function getAppLogs( $id_application ){
 
         $result = array();
-        $log_data  = logModel::getAppLog( $id_application );
+        //$log_data  = logModel::getAppLog( $id_application, $id_platform );
         $platforms = platformModel::getPlatforms();
 
-        foreach( $platforms as $k => $v )
-            $platforms[$v['id_platform']] = $v['name_platform'];
+        foreach( $platforms as $k => $v ){
 
-        foreach( $log_data as $k => $v ){
+            $log_data = array();
+            $log_data = logModel::getAppLog( $id_application, $v['id_platform'], 10 );
 
-            $result[$v['id_platform']][] = $v + array(
-                'name_platform' => $platforms[$v['id_platform']],
-            );
+            if( count($log_data) )
+                $result[$v['id_platform']] = $log_data + array('name_platform' => $v['name_platform']);
         }
 
         return $this->render('app_log', array(
