@@ -40,6 +40,29 @@ class logModel extends classModel{
     return self::insertID();
     }
 
+    public static function updateData( $data ){
+
+        $sql = "UPDATE check_log SET
+                id_application = '".$data['id_application']."',
+                id_platform    = '".$data['id_platform']."',
+                id_user        = '".$data['id_user']."',
+                HTTP_code      = '".$data['HTTP_code']."',
+                date_check     = '".$data['date_check']."',
+                size_download  = '".$data['size_download']."',
+                download_content_length = '".$data['download_content_length']."',
+                redirect_url = '".self::escapeString($data['redirect_url'])."',
+                request_header = '".self::escapeString($data['request_header'])."',
+                weight_diff    = '".$data['weight_diff']."'
+
+                WHERE
+                    id_check_log = '".$data['id_check_log']."'
+                ";
+
+        self::query($sql);
+        print self::queryError();
+        return null;
+    }
+
     public static function getLastLogs( $id_applicaton = 0, $id_platform = 0 ){
 
         $result = array();
@@ -67,8 +90,8 @@ class logModel extends classModel{
         $sql = "SELECT cl.*, u.email_user
                 FROM check_log cl
                 LEFT JOIN users u ON cl.id_user = u.id_user
-                WHERE cl.id_application = '".$id_application."'
-                ".( $id_platform ? " AND cl.id_platform = '".$id_platform."'":"" )."
+                WHERE cl.id_application = '".self::escapeString($id_application)."'
+                ".( $id_platform ? " AND cl.id_platform = '".self::escapeString($id_platform)."'":"" )."
                 ORDER BY cl.date_check DESC".
                 ($limit ? " LIMIT 0, ".$limit : "");
 
@@ -77,5 +100,29 @@ class logModel extends classModel{
             $result[] = $r;
 
         return $result;
+    }
+
+    public static function checkInBase( $data, $exceptions = array() ){
+
+        $condition = array();
+        if( is_array($data) ) foreach( $data as $k => $v ){
+
+            if( !in_array($k, $exceptions) )
+                $condition[] = $k.' = "'.parent::escapeString($v).'"';
+        }
+
+        if( count($condition) ){
+
+            $sql = "SELECT * FROM check_log
+                    WHERE ".implode(" AND ", $condition);
+
+            $q = parent::query($sql);
+            $r = parent::fetchAssoc($q);
+            print parent::queryError();
+
+            return $r['id_check_log'] ? $r['id_check_log'] : false;
+        }
+
+        return false;
     }
 }

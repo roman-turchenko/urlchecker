@@ -56,8 +56,13 @@ class apiController extends classController{
                 'weight_diff'    => $response_data['size_download'] - $last_log_data[$id_application][$id_platform]['size_download'],
             );
 
-            $id_log = logModel::insertData($log_data);
-            $log_data = logModel::getLog( $id_log );
+            if( ($id_check_log = logModel::checkInBase($log_data, array('date_check'))) !== false ){
+                logModel::updateData($log_data + array('id_check_log' => $id_check_log));
+            }else{
+                $id_check_log = logModel::insertData($log_data);
+            }
+
+            $log_data = logModel::getLog( $id_check_log );
 
             print json_encode($log_data+array('curl_response' => $response_data)+ array('last_log' => $last_log_data));
             die();

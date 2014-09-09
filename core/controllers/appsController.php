@@ -78,6 +78,9 @@ class appsController extends classController{
                 $uri_data = array('action' => 'add');
             }
 
+            if( !count(appsModel::$errors) )
+                appsModel::$messages[] = 'Success!';
+
             appsModel::setSession(array(
                 'errors'   => appsModel::$errors,
                 'messages' => appsModel::$messages,
@@ -109,9 +112,13 @@ class appsController extends classController{
                 ));
 
                 appsModel::deleteApp2PlatformData($_POST['id_application']);
+
                 if( count($_POST['id_platform']) > 0 )
                     appsModel::insertApp2PlatformData($_POST['id_application'], $_POST['id_platform']);
             }
+
+            if( !count(appsModel::$errors) )
+                appsModel::$messages[] = 'Success!';
 
             appsModel::setSession(array(
                 'errors'   => appsModel::$errors,

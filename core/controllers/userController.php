@@ -72,6 +72,9 @@ class userController extends classController{
                 $uri_data = array('action' => 'add');
             }
 
+            if( !count(appsModel::$errors) )
+                userModel::$messages[] = 'Success!';
+
             userModel::setSession(array(
                 'errors'   => userModel::$errors,
                 'messages' => userModel::$messages,
@@ -102,6 +105,9 @@ class userController extends classController{
                     'id_user' => $_POST['id_user'],
                 ));
             }
+
+            if( !count(appsModel::$errors) )
+                userModel::$messages[] = 'Success!';
 
             userModel::setSession(array(
                 'errors'   => userModel::$errors,

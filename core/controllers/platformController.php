@@ -103,6 +103,9 @@ class platformController extends classController{
                 $uri_data = array('action' => 'add');
             }
 
+            if( !count(platformModel::$errors) )
+                platformModel::$messages[] = 'Success!';
+
             platformModel::setSession(array(
                 'errors'   => platformModel::$errors,
                 'messages' => platformModel::$messages,
@@ -133,6 +136,9 @@ class platformController extends classController{
                     'id_platform' => $_POST['id_platform'],
                 ));
             }
+
+            if( !count(platformModel::$errors) )
+                platformModel::$messages[] = 'Success!';
 
             platformModel::setSession(array(
                 'errors'   => platformModel::$errors,

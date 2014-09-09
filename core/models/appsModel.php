@@ -12,9 +12,9 @@ class appsModel extends classModel{
         $sql = "SELECT a.*
                 FROM applications a
                 WHERE a.id_user = '".$id_user."'";
-        $q = self::query($sql);
+        $q = parent::query($sql);
 
-        while( $r = self::fetchAssoc($q) )
+        while( $r = parent::fetchAssoc($q) )
             $result[] = $r;
 
         return $result;
@@ -26,9 +26,9 @@ class appsModel extends classModel{
                 FROM applications a
                 WHERE
                     id_application = '".$id_application."'";
-        $q = self::query($sql);
+        $q = parent::query($sql);
 
-    return self::fetchAssoc($q);
+    return parent::fetchAssoc($q);
     }
 
 
@@ -50,9 +50,13 @@ class appsModel extends classModel{
                   url_application  = '".self::escapeString($data['url_application'])."',
                   description_application = '".self::escapeString($data['description_application'])."',
                   id_user = '".$data['id_user']."'";
-        self::query($sql);
+        parent::query($sql);
 
-    return self::insertID();
+        if( parent::queryError() ){
+            self::$errors[] = parent::queryError();
+            return false;
+        }else
+           return parent::insertID();
     }
 
     static function updateData( $data ){
@@ -65,16 +69,22 @@ class appsModel extends classModel{
                 WHERE
                     id_application = '".$data['id_application']."' AND
                     id_user = '".$data['id_user']."'";
-        self::query($sql);
+        parent::query($sql);
 
-    return null;
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
+        return null;
     }
 
     static function deleteData( $id_application ){
         $sql = "DELETE FROM applications WHERE id_application = '".$id_application."'";
         self::query($sql);
 
-    return null;
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
+        return null;
     }
 
     public static function getApp2PlatformData( $id_application ){
@@ -82,9 +92,10 @@ class appsModel extends classModel{
         $result = array();
         if( !empty($id_application) ){
             $sql = "SELECT * FROM app2platforms WHERE id_application = '".$id_application."'";
-            $q = self::query($sql);
-            while( $r = self::fetchAssoc($q) ) $result[] = $r['id_platform'];
+            $q = parent::query($sql);
+            while( $r = parent::fetchAssoc($q) ) $result[] = $r['id_platform'];
         }
+
         return $result;
     }
 
@@ -93,19 +104,31 @@ class appsModel extends classModel{
         $sql = "INSERT INTO app2platforms (id_application, id_platform) VALUES ('"
             .$id_application."', '".implode("'),('".$id_application."', '", $data)
             ."')";
-        self::query($sql);
+        parent::query($sql);
 
-    return null;
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
+        return null;
     }
 
     public static function deleteApp2PlatformData( $id_application ){
         $sql = "DELETE FROM app2platforms WHERE id_application = '".$id_application."'";
         self::query($sql);
+
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
+        return null;
     }
 
     public static function deleteLogData( $id_application ){
         $sql = "DELETE FROM check_log WHERE id_application = '".$id_application."'";
-        self::query($sql);
+        parent::query($sql);
+
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
         return null;
     }
 

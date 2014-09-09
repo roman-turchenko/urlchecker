@@ -10,9 +10,9 @@ class userModel extends classModel{
 
         $result = array();
         $sql = "SELECT * FROM users";
-        $q = self::query($sql);
+        $q = parent::query($sql);
 
-        while( $r = self::fetchAssoc($q) )
+        while( $r = parent::fetchAssoc($q) )
             $result[] = $r;
 
         return $result;
@@ -24,42 +24,47 @@ class userModel extends classModel{
                 FROM users
                 WHERE
                     id_user = '".$id_user."'";
-        $q = self::query($sql);
+        $q = parent::query($sql);
 
-    return self::fetchAssoc($q);
+    return parent::fetchAssoc($q);
     }
 
     static function insertData( $data ){
 
         $sql = "INSERT INTO users
                 SET
-                  login_user = '".self::escapeString($data['login_user'])."',
-                  email_user = '".self::escapeString($data['email_user'])."',
-                  password_user = '".md5(self::escapeString($data['password_user']))."'";
-        self::query($sql);
-
-    return self::insertID();
+                  login_user = '".parent::escapeString($data['login_user'])."',
+                  email_user = '".parent::escapeString($data['email_user'])."',
+                  password_user = '".md5(parent::escapeString($data['password_user']))."'";
+        parent::query($sql);
+        
+        if( parent::queryError() ){
+            self::$errors[] = parent::queryError();
+            return false;
+        }else
+            return parent::insertID();
     }
 
     static function updateData( $data ){
 
         $sql = "UPDATE users
                 SET
-                    login_user = '".self::escapeString($data['login_user'])."',
-                    email_user = '".self::escapeString($data['email_user'])."'
-               ".( !empty($data['password_user']) ? ", password_user = '".md5(self::escapeString($data['password_user']))."'" : "" )."
+                    login_user = '".parent::escapeString($data['login_user'])."',
+                    email_user = '".parent::escapeString($data['email_user'])."'
+               ".( !empty($data['password_user']) ? ", password_user = '".md5(parent::escapeString($data['password_user']))."'" : "" )."
                 WHERE
                     id_user = '".$data['id_user']."'";
 
-        self::query($sql);
-        self::$errors[] = self::queryError();
+        parent::query($sql);
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
 
     return null;
     }
 
     static function deleteData( $id_user ){
         $sql = "DELETE FROM users WHERE id_user = '".$id_user."'";
-        self::query($sql);
+        parent::query($sql);
 
     return null;
     }
@@ -68,11 +73,11 @@ class userModel extends classModel{
 
         $sql = "SELECT * FROM users
                 WHERE
-                    login_user    = '".self::escapeString($login)."' AND
-                    password_user = '".md5(self::escapeString(($password)))."'";
+                    login_user    = '".parent::escapeString($login)."' AND
+                    password_user = '".md5(parent::escapeString(($password)))."'";
 
-        $q = self::query($sql);
-        $r = self::fetchAssoc($q);
+        $q = parent::query($sql);
+        $r = parent::fetchAssoc($q);
 
         return $r['id_user'] ? $r['id_user'] : null;
     }

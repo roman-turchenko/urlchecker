@@ -13,9 +13,9 @@ class platformModel extends classModel{
 
         $result = array();
         $sql = "SELECT * FROM platforms";
-        $q = self::query($sql);
+        $q = parent::query($sql);
 
-        while( $r = self::fetchAssoc($q) )
+        while( $r = parent::fetchAssoc($q) )
             $result[] = $r;
 
     return $result;
@@ -27,8 +27,8 @@ class platformModel extends classModel{
                 WHERE
                     id_platform = '".$id_platform."'";
 
-        $q = self::query($sql);
-    return self::fetchAssoc($q);
+        $q = parent::query($sql);
+    return parent::fetchAssoc($q);
     }
 
     static function insertData( $data ){
@@ -38,9 +38,13 @@ class platformModel extends classModel{
                     name_platform = '".$data['name_platform']."',
                     UA_string     = '".$data['UA_string']."',
                     description_platform = '".$data['description_platform']."'";
-        $q = self::query($sql);
+        $q = parent::query($sql);
 
-    return self::insertID();
+        if( parent::queryError() ){
+            self::$errors[] = parent::queryError();
+            return false;
+        }else
+            return parent::insertID();
     }
 
     static function updateData( $data ){
@@ -52,25 +56,41 @@ class platformModel extends classModel{
                     description_platform = '".$data['description_platform']."'
                 WHERE
                     id_platform = '".$data['id_platform']."'";
-        $q = self::query($sql);
+        $q = parent::query($sql);
+
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
         return null;
     }
 
     static function deleteData( $id_platform ){
         $sql = "DELETE FROM platforms WHERE id_platform = '".$id_platform."'";
-        self::query($sql);
+        parent::query($sql);
+
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
         return null;
     }
 
     static function deletePlatform2AppData( $id_platform ){
         $sql = "DELETE FROM app2platforms WHERE id_platform = '".$id_platform."'";
-        self::query($sql);
+        parent::query($sql);
+
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
         return null;
     }
 
     static function deleteLogData( $id_platform ){
         $sql = "DELETE FROM check_log WHERE id_platform = '".$id_platform."'";
-        self::query($sql);
+        parent::query($sql);
+
+        if( parent::queryError() )
+            self::$errors[] = parent::queryError();
+
         return null;
     }
 
