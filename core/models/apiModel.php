@@ -11,30 +11,34 @@ class apiModel extends classModel{
 
 
 //  ++++ Curl
-    static function getRequestInfo( $url, $getinfo_opt = false, $request_opt = array() ){
+    static function getRequestInfo( $url, $request_opt = array() ){
 
         $result = array();
 
         $ch = null;
-        $ch = curl_init($url);
 
+        $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         if( count($request_opt) > 0 ) foreach( $request_opt as $k => $v )
             curl_setopt( $ch, $k, $v );
 
+        ob_start();
         curl_exec($ch);
+        $html = ob_get_clean();
 
         if( ($error = self::getCurlError(curl_errno($ch))) === false ){
 
-            $result = $getinfo_opt ? curl_getinfo($ch, $getinfo_opt) : curl_getinfo($ch);
+            $result = curl_getinfo($ch);
+            $html = preg_replace(array('#>\s+<#','#[\r|\n]+#','#\s{2,}#'), array('><', '', ''), $html);
+
         }else{
-            parent::$errors[] = $error;
+            self::$errors[] = $error;
         }
 
         curl_close($ch);
 
-        return $result;
+        return count($result) ? $result + array('html'=> $html) : array();
     }
 
     /**

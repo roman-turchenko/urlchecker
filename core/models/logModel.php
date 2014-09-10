@@ -32,7 +32,8 @@ class logModel extends classModel{
                 download_content_length = '".$data['download_content_length']."',
                 redirect_url = '".self::escapeString($data['redirect_url'])."',
                 request_header = '".self::escapeString($data['request_header'])."',
-                weight_diff    = '".$data['weight_diff']."'
+                weight_diff    = '".$data['weight_diff']."',
+                app_resources    = '".$data['app_resources']."'
                 ";
 
         self::query($sql);
@@ -52,7 +53,8 @@ class logModel extends classModel{
                 download_content_length = '".$data['download_content_length']."',
                 redirect_url = '".self::escapeString($data['redirect_url'])."',
                 request_header = '".self::escapeString($data['request_header'])."',
-                weight_diff    = '".$data['weight_diff']."'
+                weight_diff    = '".$data['weight_diff']."',
+                app_resources  = '".$data['app_resources']."'
 
                 WHERE
                     id_check_log = '".$data['id_check_log']."'
