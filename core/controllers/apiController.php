@@ -19,10 +19,11 @@ class apiController extends classController{
     public function getHttpCodeAction(){
 
 
-        $id_application = $_POST['id_application'];
-        $id_platform    = $_POST['id_platform'];
+        $resources = array();
+        $id_application = $_GET['id_application'];
+        $id_platform    = $_GET['id_platform'];
 
-        if( check_RequestMethod('POST') ){
+        if( check_RequestMethod('GET') ){
 
             set_Json_header();
 
@@ -40,8 +41,7 @@ class apiController extends classController{
                 CURLOPT_RETURNTRANSFER => true,
                 CURLINFO_HEADER_OUT    => true,
             ));
-
-
+print_r($response_data);
             $resources = $this->getResources( $app_data['url_application'], $response_data['html'] );
             if( is_array($resources) ) foreach( $resources as $v ){
 
@@ -78,7 +78,7 @@ class apiController extends classController{
 
             $log_data = logModel::getLog( $id_check_log );
 
-            print json_encode($log_data+array('curl_response' => $response_data)+ array('last_log' => $last_log_data));
+            print json_encode($log_data+array('curl_response' => $response_data, 'last_log' => $last_log_data));
             die();
         }else
             _404();

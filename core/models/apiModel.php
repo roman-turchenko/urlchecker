@@ -14,7 +14,6 @@ class apiModel extends classModel{
     static function getRequestInfo( $url, $request_opt = array() ){
 
         $result = array();
-
         $ch = null;
 
         $ch = curl_init($url);
