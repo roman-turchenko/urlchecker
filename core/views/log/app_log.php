@@ -26,6 +26,7 @@ if( $params['app_log'] ){?>
         <tr>
             <th class="date_check">Date check</th>
             <th class="HTTP_code">Code</th>
+            <th class="HTTP_code">Size (Bytes)</th>
             <th class="more">Details</th>
         </tr>
 
@@ -44,6 +45,7 @@ if( $params['app_log'] ){?>
         <tr class="ac_logs log_item <?=( $ke%2 == 0?'even':'uneven' )?>" platform-key="item-<?=$k?>">
             <td class="date_check"><?=$va['date_check']?></td>
             <td class="HTTP_code"><?=$va['HTTP_code']?></td>
+            <td class="size_download"><?=$va['size_download']?></td>
             <td class="more">
                 <div class="more">
                     <u>Show More</u>

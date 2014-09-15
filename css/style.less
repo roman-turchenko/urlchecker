@@ -73,7 +73,7 @@ ul.top_menu {
       a{
         .no_text_decoration;
         font: @font-for-menu;
-        margin: 10px;
+        margin: 10px 15px;
         display: block;
         color: #777;
       }
@@ -84,11 +84,13 @@ ul.top_menu {
   }
 }
 
-ul.top_menu.main{ 
+ul.top_menu.main{
     clear: both;
     li.current{
       margin-top: -3px;
       padding-bottom: 3px;
+      box-shadow: #CCC 0px -2px 2px;
+      border-radius: 5px 5px 0 0;
       a{
         font-weight: bold;
         color: #000000;
@@ -98,6 +100,17 @@ ul.top_menu.main{
 
 ul.top_menu.sub{
   background: @active-item-menu-background;
+  height: 46px;
+  li{
+    height: 46px;
+    a{
+      margin-top: 20px;
+      font-size: 12px;
+      /*text-transform: uppercase;*/
+      color: #0835EB;;
+
+    }
+  }
 }
 
 /* Content */
@@ -147,7 +160,7 @@ table.content{
     font-weight: bold;
     padding: 5px 10px;
   }
-  
+
   th.actions{
     width: 100px;
     
@@ -167,6 +180,15 @@ table.content{
   td{
    font: 12px Tahoma;
   }
+
+  td.date_check, td.HTTP_code, td.size_download{
+      padding: 0px;
+      vertical-align: middle;
+  }
+
+  td.date_check{
+    padding-left: 20px;
+  }
   
   td.no-data{
    text-align: center;   
@@ -177,13 +199,14 @@ table.content{
 div.filter_section{
   height: 20px;
   background: #DDF79C;
-  padding: 10px 10px;
+  padding: 8px 10px;
+  text-align: right;
 }
 
 /* Data form */
 form.form-container{
 
-  margin: 0px 10px;
+  margin: 0px 30px;
 
   ul{
     .remove_default_list_style;
